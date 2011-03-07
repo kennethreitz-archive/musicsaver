@@ -1,4 +1,10 @@
-flask
-flask-sqlalchemy
-tablib
-requests
+Flask==0.6.1
+Flask-SQLAlchemy==0.9.1
+Flask-Script==0.3.1
+Jinja2==2.5.5
+Logbook==0.3
+SQLAlchemy==0.6.5
+Werkzeug==0.6.2
+python-dateutil==1.5
+tablib==0.9.3
+
