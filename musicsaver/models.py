@@ -15,6 +15,7 @@ class URL(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     song = db.Column(db.String(800))
     active = db.Column(db.Boolean)
+    referrer = db.Column(db.String(800))
 
     def get_song(self):
         # return song
@@ -37,7 +38,7 @@ class AccessLog(db.Model):
     """The :class:`AccessLog` object is a record of a song being accessed.
     """
 
-	__tablename__ = 'access_logs'
+    __tablename__ = 'access_logs'
 
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime)
