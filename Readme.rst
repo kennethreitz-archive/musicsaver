@@ -17,8 +17,9 @@ Music Request Process:
 Notes:
 ------
 
-- ``user_id`` is sha1 of ip address
-- Block known scapers
+- ``user_id`` is ip address
+- 
+- Block known scrapers
 
 Disable access for known referrals and such.
 
