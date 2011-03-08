@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-import json
-from cPickle import dumps
 
 import requests
 
@@ -13,7 +11,6 @@ from flask import (
 
 from musicsaver import app
 from musicsaver.models import AccessLog, URL
-
 
 
 
