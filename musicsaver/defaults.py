@@ -22,6 +22,8 @@ MUSIC_CACHE_DIR = '/tmp/'
 ALLOWED_SITES = ['jamsspace.com',]
 CACHED_SITES = ['',]
 
+USER_BLACKLIST = ['']
+
 # Migration Fetching Information
 
 CREDS = {
