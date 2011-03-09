@@ -2,7 +2,7 @@
 
 import hashlib
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 import requests
@@ -64,19 +64,31 @@ def kosher_request(request):
     if not any([s in url for s in app.config['ALLOWED_SITES']]):
         return False
 
-    # set = query all requests from this ip
+
+    #
+    # TIME SENSITIVE CHECKING PER IP
+    #
+
     set = AccessLog.query.filter_by(origin=request.remote_addr)
-    print set
-    print dir(set)
-#    print len(set.filter_by(and_(when>=datetime())))
 
-    # if len of queries per minute > 3 return false
+    now = datetime.now()
 
+    ago_minute = now - timedelta(minutes=1)
+    ago_hour = now - timedelta(hours=1)
+    ago_day = now - timedelta(days=1)
 
-#SONGS_PER_MINUTE = 3
-#SONGS_PER_HOUR = 16
-#SONGS_PER_DAY = 180
+    past_minute = len(set.filter(between(AccessLog.when, ago_minute, now)).all())
+    past_hour = len(set.filter(between(AccessLog.when, ago_hour, now)).all())
+    past_day = len(set.filter(between(AccessLog.when, ago_day, now)).all())
 
+    if past_minute > app.config['SONGS_PER_MINUTE']:
+        return False
+
+    if past_hour > app.config['SONGS_PER_HOUR']:
+        return False
+
+    if past_day > app.config['SONGS_PER_DAY']:
+        return False
 
 
     return True
