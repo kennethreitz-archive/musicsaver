@@ -14,6 +14,16 @@ from flask import (
 from musicsaver import app
 from musicsaver.models import AccessLog
 
+
+def log(request, successful):
+
+    l = AccessLog()
+    l.origin = request.origin
+    l.when = datetime.datetime.now()
+    l.success = successful
+    l.song = request.args.get('p', None)
+
+
 def fetch(url, cache=True):
     """fetches song."""
 
@@ -23,13 +33,13 @@ def fetch(url, cache=True):
     # enter temp directory
     os.chdir(app.config['MUSIC_CACHE_DIR'])
 
-
+    # check cache first
     if os.path.exists(hash):
         with open(hash, 'rb') as f:
             return f.read()
     else:
         r = requests.get(url)
-
+        
         if cache:
             with open(hash, 'wb') as f:
                 f.write(r.content)
@@ -56,10 +66,11 @@ def get_song():
     """Receives song."""
 
     url = request.args.get('p', app.config['WARNING_URL'])
-
     do_cache = any([s in url for s in app.config['CACHED_SITES']])
 
     if kosher_request(request):
+        log(request, True)
         return fetch(url, do_cache)
     else:
+        log(request, False)
         return fetch(app.config['WARNING_URL'])

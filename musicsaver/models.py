@@ -13,9 +13,8 @@ class AccessLog(db.Model):
     __tablename__ = 'access_logs'
 
     id = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.DateTime)
+
     origin = db.Column(db.String(80))
     song = db.Column(db.String(800))
-
-
-
+    success = db.Column(db.Boolean)
+    when = db.Column(db.DateTime)
