@@ -10,7 +10,7 @@ from flask import (
 )
 
 from musicsaver import app
-from musicsaver.models import AccessLog, URL
+from musicsaver.models import AccessLog
 
 
 
