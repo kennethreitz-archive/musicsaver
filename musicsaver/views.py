@@ -14,6 +14,7 @@ from flask import (
 
 from musicsaver import app
 from musicsaver.models import AccessLog, db
+from musicsaver.packages import pyipinfodb
 from sqlalchemy.sql import between
 
 
@@ -119,13 +120,31 @@ def get_song():
     
 @app.route('/metrics', methods=['GET'])
 def gen_report():
+    """Generates metrics."""
+
+    api = pyipinfodb.IPInfo(app.config['INFODB_API_KEY'])
+
+
+
     logs = AccessLog.query.all()
 
     data = tablib.Dataset()
-    data.headers = ['id', 'origin', 'song', 'success', 'when']
+    data.headers = [
+        'id', 'origin', 'song', 'success', 'when',
+        'country', 'city', 'zip', 'lat', 'long'
+    ]
 
+
+    
     for log in logs:
-        _row = [log.id, log.origin, log.song, log.success, log.when.isoformat()]
+
+        geo = api.GetCity(log.origin)
+
+        _row = [
+            log.id, log.origin, log.song, log.success, log.when.isoformat(),
+            geo['CountryCode'], geo['City'], geo['ZipPostalCode'], geo['Latitude'], geo['Longitude']
+        ]
+
         data.append(_row)
 
 
