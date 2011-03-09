@@ -25,7 +25,7 @@ def store(object):
 def get_song():
     """Receives song."""
 
-    url = request.args.get('p')
+    url = request.args.get('p', app.config['WARNING_URL'])
     r = requests.get(url)
     
     return r.content
