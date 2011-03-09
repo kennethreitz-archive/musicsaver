@@ -23,6 +23,14 @@ Notes:
 
 Disable access for known referrals and such.
 
+
+Install:
+
+    components/com_muscol/helpers.php
+
+    function getSongFileURL($song){
+    
+
 Configuration:
 --------------
 
