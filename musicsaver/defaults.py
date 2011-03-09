@@ -5,8 +5,8 @@ Application Configuration
 
 # Database
 
-# SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
-
+SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
+SQLALCHEMY_POOL_RECYCLE = 1000
 
 # Music Constraints
 

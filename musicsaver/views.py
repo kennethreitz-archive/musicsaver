@@ -12,16 +12,19 @@ from flask import (
 )
 
 from musicsaver import app
-from musicsaver.models import AccessLog
+from musicsaver.models import AccessLog, db
 
 
-def log(request, successful):
+def log_request(request, successful):
+    """Records given request."""
 
-    l = AccessLog()
-    l.origin = request.origin
-    l.when = datetime.datetime.now()
-    l.success = successful
-    l.song = request.args.get('p', None)
+    log = AccessLog()
+    log.origin = request.remote_addr
+    log.when = datetime.now()
+    log.success = successful
+    log.song = request.args.get('p', None)
+
+    store(log)
 
 
 def fetch(url, cache=True):
@@ -50,7 +53,6 @@ def fetch(url, cache=True):
 def kosher_request(request):
     # check valid domain
     
-
     return True
 
 
@@ -69,8 +71,8 @@ def get_song():
     do_cache = any([s in url for s in app.config['CACHED_SITES']])
 
     if kosher_request(request):
-        log(request, True)
+        log_request(request, successful=True)
         return fetch(url, do_cache)
     else:
-        log(request, False)
+        log_request(request, successful=False)
         return fetch(app.config['WARNING_URL'])
