@@ -5,7 +5,7 @@ Application Configuration
 
 # Database
 
-SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:1z8P472RKF@127.0.0.1/musicsaver'
 SQLALCHEMY_POOL_RECYCLE = 1000
 
 # Music Constraints
@@ -16,12 +16,12 @@ SONGS_PER_DAY = 180
 
 WARNING_URL = 'http://jamsspace.com/songs/warning.mp3'
 
-MUSIC_CACHE_DIR = '/tmp/'
+MUSIC_CACHE_DIR = '/mp3/'
 
 ALLOWED_SITES = ['jamsspace.com',]
-CACHED_SITES = ['',]
+CACHED_SITES = []
 
-USER_BLACKLIST = ['']
+USER_BLACKLIST = ['127.0.0.1']
 
 # Migration Fetching Information
 

@@ -123,8 +123,7 @@ def gen_report():
     """Generates metrics."""
 
     api = pyipinfodb.IPInfo(app.config['INFODB_API_KEY'])
-
-
+    
 
     logs = AccessLog.query.all()
 
@@ -133,7 +132,6 @@ def gen_report():
         'id', 'origin', 'song', 'success', 'when',
         'country', 'city', 'zip', 'lat', 'long'
     ]
-
 
     
     for log in logs:
