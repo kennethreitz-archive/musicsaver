@@ -4,7 +4,7 @@ import hashlib
 import os
 from datetime import datetime, timedelta
 
-
+import tablib
 import requests
 
 from flask import (
@@ -114,3 +114,24 @@ def get_song():
     else:
         log_request(request, successful=False)
         return fetch(app.config['WARNING_URL'])
+
+
+    
+@app.route('/metrics', methods=['GET'])
+def gen_report():
+    logs = AccessLog.query.all()
+
+    data = tablib.Dataset()
+    data.headers = ['id', 'origin', 'song', 'success', 'when']
+
+    for log in logs:
+        _row = [log.id, log.origin, log.song, log.success, log.when.isoformat()]
+        data.append(_row)
+
+
+    r = app.make_response(data.xls)
+
+    r.headers['Content-disposition'] = 'attachment; filename=musicsaver_%s.xls' % (str(datetime.now()))
+    r.headers['Content-type'] = 'application/%xls'
+
+    return r
