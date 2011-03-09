@@ -4,6 +4,7 @@ import hashlib
 import os
 from datetime import datetime
 
+
 import requests
 
 from flask import (
@@ -13,6 +14,7 @@ from flask import (
 
 from musicsaver import app
 from musicsaver.models import AccessLog, db
+from sqlalchemy.sql import between
 
 
 def log_request(request, successful):
@@ -51,8 +53,32 @@ def fetch(url, cache=True):
 
 
 def kosher_request(request):
-    # check valid domain
-    
+
+    url = request.args.get('p', app.config['WARNING_URL'])
+
+    # check blacklist
+    if request.remote_addr in app.config['USER_BLACKLIST']:
+        return False
+
+    # check if allowed site
+    if not any([s in url for s in app.config['ALLOWED_SITES']]):
+        return False
+
+    # set = query all requests from this ip
+    set = AccessLog.query.filter_by(origin=request.remote_addr)
+    print set
+    print dir(set)
+#    print len(set.filter_by(and_(when>=datetime())))
+
+    # if len of queries per minute > 3 return false
+
+
+#SONGS_PER_MINUTE = 3
+#SONGS_PER_HOUR = 16
+#SONGS_PER_DAY = 180
+
+
+
     return True
 
 
