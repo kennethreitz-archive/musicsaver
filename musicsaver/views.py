@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import hashlib
+import os
 from datetime import datetime
 
 import requests
@@ -12,6 +14,34 @@ from flask import (
 from musicsaver import app
 from musicsaver.models import AccessLog
 
+def fetch(url, cache=True):
+    """fetches song."""
+
+    # sha1 of url
+    hash = hashlib.sha1(url).hexdigest()
+
+    # enter temp directory
+    os.chdir(app.config['MUSIC_CACHE_DIR'])
+
+
+    if os.path.exists(hash):
+        with open(hash, 'rb') as f:
+            return f.read()
+    else:
+        r = requests.get(url)
+
+        if cache:
+            with open(hash, 'wb') as f:
+                f.write(r.content)
+
+        return r.content
+
+
+def kosher_request(request):
+    # check valid domain
+    
+
+    return True
 
 
 def store(object):
@@ -26,6 +56,10 @@ def get_song():
     """Receives song."""
 
     url = request.args.get('p', app.config['WARNING_URL'])
-    r = requests.get(url)
-    
-    return r.content
+
+    do_cache = any([s in url for s in app.config['CACHED_SITES']])
+
+    if kosher_request(request):
+        return fetch(url, do_cache)
+    else:
+        return fetch(app.config['WARNING_URL'])
