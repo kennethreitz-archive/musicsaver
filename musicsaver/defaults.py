@@ -19,14 +19,8 @@ WARNING_URL = 'http://jamsspace.com/songs/warning.mp3'
 
 MUSIC_CACHE_DIR = '/tmp/'
 
-SITES = {
-    'jamsspace.com': {
-        'cache': False
-    },
-    'othersite.org': {
-        cache: True
-    }
-}
+ALLOWED_SITES = ['jamsspace.com',]
+CACHED_SITES = ['',]
 
 # Migration Fetching Information
 
