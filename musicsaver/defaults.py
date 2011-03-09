@@ -17,6 +17,16 @@ URL_EXPIRES_MINUTES = 15
 
 WARNING_URL = 'http://jamsspsace.com/songs/warning.mp3'
 
+MUSIC_CACHE_DIR = '/tmp/'
+
+SITES = {
+    'jamsspace.com': {
+        'cache': False
+    },
+
+
+}
+
 # Migration Fetching Information
 
 CREDS = {
