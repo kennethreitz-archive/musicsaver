@@ -11,8 +11,8 @@ SQLALCHEMY_POOL_RECYCLE = 1000
 # Music Constraints
 
 SONGS_PER_MINUTE = 3
-SONGS_PER_HOUR = 16
-SONGS_PER_DAY = 180
+SONGS_PER_HOUR = 25
+SONGS_PER_DAY = 200
 
 WARNING_URL = 'http://jamsspace.com/songs/warning.mp3'
 
