@@ -18,7 +18,7 @@ WARNING_URL = 'http://jamsspace.com/songs/warning.mp3'
 
 MUSIC_CACHE_DIR = '/mp3/'
 
-ALLOWED_SITES = ['jamsspace.com', 'tuggmusic.com']
+ALLOWED_SITES = ['jamsspace.com', 'tuggmusic.com', 'djunwind.com']
 CACHED_SITES = []
 
 USER_BLACKLIST = ['127.0.0.1']
