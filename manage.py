@@ -9,7 +9,7 @@ from flaskext.script import Manager
 from sqlalchemy.ext.serializer import loads, dumps
 
 from musicsaver import app
-from musicsaver.models import db
+from musicsaver.models import db, AccessLog
 
 
 manager = Manager(app)
@@ -27,6 +27,21 @@ def dbname(logs=False):
 	"""List DB Name in use."""
 
 	print app.config['SQLALCHEMY_DATABASE_URI']
+
+
+@manager.command
+def geo_sync():
+    """Add geo information to all logged requests."""
+
+    api = pyipinfodb.IPInfo(app.config['INFODB_API_KEY'])
+
+    logs = AccessLog.query.all()
+
+    for log in logs:
+        log.geo = api.GetCity(log.origin)
+        db.session.add(log)
+        db.session.commit()
+
 
 
 if __name__ == "__main__":
