@@ -10,6 +10,7 @@ from sqlalchemy.ext.serializer import loads, dumps
 
 from musicsaver import app
 from musicsaver.models import db, AccessLog
+from musicsaver.packages import pyipinfodb
 
 
 manager = Manager(app)
