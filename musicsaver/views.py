@@ -21,14 +21,18 @@ from sqlalchemy.sql import between
 def log_request(request, successful):
     """Records given request."""
 
-    api = pyipinfodb.IPInfo(app.config['INFODB_API_KEY'])
 
     log = AccessLog()
     log.origin = request.remote_addr
     log.when = datetime.now()
     log.success = successful
     log.song = request.args.get('p', None)
-    log.geo = api.GetCity(request.remote_addr)
+
+    try:
+        api = pyipinfodb.IPInfo(app.config['INFODB_API_KEY'])
+        log.geo = api.GetCity(request.remote_addr)
+    except Exception:
+        pass
 
     store(log)
 
