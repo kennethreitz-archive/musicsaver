@@ -40,13 +40,12 @@ def geo_sync():
 
     for log in logs:
 
-        print log.id,
+        if not log.geo:
+            log.geo = api.GetCity(log.origin)
+            db.session.add(log)
+            db.session.commit()
 
-        log.geo = api.GetCity(log.origin)
-        db.session.add(log)
-        db.session.commit()
-
-        print '.'
+        print '.',
 
 
 
