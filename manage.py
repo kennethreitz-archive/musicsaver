@@ -38,9 +38,14 @@ def geo_sync():
     logs = AccessLog.query.all()
 
     for log in logs:
+
+        print log.id,
+
         log.geo = api.GetCity(log.origin)
         db.session.add(log)
         db.session.commit()
+
+        print '.'
 
 
 
