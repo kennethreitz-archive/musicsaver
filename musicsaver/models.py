@@ -18,3 +18,4 @@ class AccessLog(db.Model):
     song = db.Column(db.String(800))
     success = db.Column(db.Boolean)
     when = db.Column(db.DateTime)
+    geo = db.Column(db.PickleType)
