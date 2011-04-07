@@ -21,11 +21,14 @@ from sqlalchemy.sql import between
 def log_request(request, successful):
     """Records given request."""
 
+    api = pyipinfodb.IPInfo(app.config['INFODB_API_KEY'])
+
     log = AccessLog()
     log.origin = request.remote_addr
     log.when = datetime.now()
     log.success = successful
     log.song = request.args.get('p', None)
+    log.geo = api.GetCity(request.remote_addr)
 
     store(log)
 
@@ -45,7 +48,7 @@ def fetch(url, cache=True):
             return f.read()
     else:
         r = requests.get(url)
-        
+
         if cache:
             with open(hash, 'wb') as f:
                 f.write(r.content)
@@ -117,13 +120,10 @@ def get_song():
         return fetch(app.config['WARNING_URL'])
 
 
-    
+
 @app.route('/metrics', methods=['GET'])
 def gen_report():
     """Generates metrics."""
-
-    api = pyipinfodb.IPInfo(app.config['INFODB_API_KEY'])
-    
 
     logs = AccessLog.query.all()
 
@@ -133,10 +133,10 @@ def gen_report():
         'country', 'city', 'zip', 'lat', 'long'
     ]
 
-    
+
     for log in logs:
 
-        geo = api.GetCity(log.origin)
+        geo = log.geo
 
         _row = [
             log.id, log.origin, log.song, log.success, log.when.isoformat(),
